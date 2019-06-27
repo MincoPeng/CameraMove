@@ -1,4 +1,4 @@
-public class ProjectBuild : Editor {
+public class BuildAssets : Editor {
         private static string[] s;
         static void BuildPackage()
         {
