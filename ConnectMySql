@@ -1,0 +1,42 @@
+using UnityEngine;  
+using System;  
+using System.Collections;  
+  
+using System.Data;  
+using MySql.Data.MySqlClient;  
+  
+  
+public class ConnectMySql : MonoBehaviour  
+{  
+    void Start()  
+    {  
+        string constr = “server=localhost;Database=myscoresdb;User Id=root;password=1111”;  
+        //建立连接的语句  
+        //如果是本地数据库server为localhost，不是则输入server的地址  
+        MySqlConnection mycon = new MySqlConnection(constr); //建立连接  
+        mycon.Open();  
+          
+        //插入的指令  
+        MySqlCommand mycmd = new MySqlCommand(“insert into hiscores(id,name,score) values(4,’lisi’,98)”, mycon);  
+        if (mycmd.ExecuteNonQuery() > 0)  
+            Debug.Log(”Insert success!”);  
+  
+        //查询指令  
+        string selstr = “select * from hiscores”;  
+        MySqlCommand myselect = new MySqlCommand(selstr, mycon);  
+        DataSet ds = new DataSet();  
+        try  
+        {  
+            MySqlDataAdapter da = new MySqlDataAdapter(selstr, mycon);  
+            da.Fill(ds);  
+            Debug.Log(”Query success!”);  
+            print(ds.Tables[0].Rows[0][0]);  
+        }  
+        catch (Exception ee)  
+        {  
+            throw new Exception(“SQL: ” + selstr + “\n” + ee.Message.ToString());  
+        }  
+  
+        mycon.Close(); //关闭连接  
+    }  
+}  
